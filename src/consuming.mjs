@@ -15,10 +15,18 @@ export function getCatch() {
     .catch((err) => setText(err));
 }
 
-export function chain() {}
-axios.get("http://localhost:3000/orders/1").then(({ data }) => {
-  setText(JSON.stringify(data));
-});
+export function chain() {
+  axios
+    .get("http://localhost:3000/orders/1")
+    .then(({ data }) => {
+      return axios.get(
+        `http://localhost:3000/addresses/${data.shippingAddress}`
+      );
+    })
+    .then(({ data }) => {
+      setText(`City: ${data.city}`);
+    });
+}
 
 export function chainCatch() {}
 
